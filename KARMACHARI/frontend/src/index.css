@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* font */
+:root { --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+html,body,#root { height: 100%; font-family: var(--font-sans); }
+body { @apply bg-gray-50 text-gray-900; }
+
+/* gov header styling */
+.header-brand { @apply flex items-center gap-3; }
+.header-emblem { @apply w-12 h-12 rounded-full bg-white flex items-center justify-center border; }
+.header-title { @apply text-govblue font-semibold text-lg; }
+
+.hero { @apply bg-white rounded shadow p-6; }
+.card { @apply bg-white rounded shadow p-4; }
+
+.btn-primary { @apply bg-govblue text-white px-4 py-2 rounded inline-flex items-center gap-2; }
+.btn-outline { @apply border border-govblue text-govblue px-3 py-1 rounded; }

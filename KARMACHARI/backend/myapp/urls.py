@@ -1,0 +1,33 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('Student_Registration/', views.student_reg, name='student_reg'),
+    path('Student_Registration/<str:enrollment>/', views.student_detail, name='student_detail'),
+    path('students_by_school/<str:name>/', views.student_by_school, name='student_by_school'),
+    path('student_login/', views.student_login, name='student_login'),
+    path('student_profile/<str:enrollment>/', views.student_profile, name='student_profile'),
+    path('official_registration/', views.official_reg, name='official_reg'),
+    path('official_login/', views.official_login, name='official_login'),
+    path('employer_registration/', views.employer_reg, name='employer_reg'),
+    path('update_employer/<int:id>/', views.employer_detail, name='employer_detail'),
+    path('employer_updateReason/<int:id>/', views.employer_updateReason, name="employer_updateReason"),
+    path('employer_login/', views.employer_login, name='employer_login'),
+    path('employer_profile/<str:enrollment>/', views.employer_profile, name="employer_profile"),
+    path('vacancies/', views.vacancy_list, name='vacancy_list'),
+    path('vacancies/<int:pk>/', views.vacancy_detail, name='vacancy_detail'),
+    path('school_registration/', views.school_reg, name='school_reg'),
+    path('school_login/', views.school_login, name='school_login'),
+    path('school_profile/<str:email>/', views.school_profile, name='school_profile'),
+    path('apply_vacancy/', views.apply_vacancy, name="apply_vacancy"),
+    path('confirm_interview/', views.confirm_interview, name="confirm_interview"),
+    path("student_applications/<str:enrollment>/", views.get_student_applications),
+    path("all_applications/", views.get_all_applications),
+    path("update_application_status/<int:app_id>/", views.update_application_status),
+    path("update_school/<int:id>/", views.school_detail, name="school_detail"),
+    path("school_updateReason/<int:id>/", views.school_updateReason, name="school_updateReason"),
+    path("company_registration/", views.company_reg, name='company_reg'),
+    path("commission_registration/", views.commission_reg, name="commission_reg"),
+    path("alo_registration/", views.alo_reg, name="alo_registration"),
+    path('dlo_registration/', views.dlo_reg, name='dlo_registration'),
+]
