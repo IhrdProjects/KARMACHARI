@@ -179,13 +179,13 @@ export default function StudentDashboard() {
       style={{ fontSize: `${fontSize}%` }} // Apply font size change here
     >
       {/* ---------------- ACCESSIBILITY WIDGET (Top Bar) ---------------- */}
-      <div id="accessibility-bar" className="w-full bg-blue-900 text-white py-1">
+      <div id="accessibility-bar" className="w-full bg-blue-900 text-white py-0.15">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             {/* FIX: Replaced Link with Button and added onClick handler */}
             <button
               onClick={handleSkipToMain}
-              className="hover:underline text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="hover:underline text-sm focus:outline-none focus:ring-2 focus:ring-white"
               tabIndex="0"
             >
               Skip to Main Content
@@ -193,7 +193,7 @@ export default function StudentDashboard() {
             {/* FIX: Changed Link to Button and added onClick handler for high contrast toggle */}
             <button
               onClick={toggleHighContrast}
-              className="hover:underline text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="hover:underline text-sm focus:outline-none focus:ring-2 focus:ring-white"
               tabIndex="0"
               aria-pressed={highContrast}
               aria-live="polite" 
@@ -209,14 +209,14 @@ export default function StudentDashboard() {
               disabled={fontSize <= 80}
               className={`p-1 border rounded-md transition ${
                 fontSize <= 80 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-800'
-              } focus:outline-none focus:ring-2 focus:ring-yellow-300`}
+              } focus:outline-none focus:ring-2 focus:ring-white`}
               aria-label="Decrease text size"
             >
               <Minus size={14} />
             </button>
             <button
               onClick={resetFontSize}
-              className="p-1 border rounded-md hover:bg-blue-800 transition flex items-center focus:outline-none focus:ring-2 focus:ring-yellow-300"
+              className="p-1 border rounded-md hover:bg-blue-800 transition flex items-center focus:outline-none focus:ring-2 focus:ring-white"
               aria-label="Reset text size"
             >
               A <RotateCcw size={12} className="ml-1" />
@@ -226,7 +226,7 @@ export default function StudentDashboard() {
               disabled={fontSize >= 150}
               className={`p-1 border rounded-md transition ${
                 fontSize >= 150 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-800'
-              } focus:outline-none focus:ring-2 focus:ring-yellow-300`}
+              } focus:outline-none focus:ring-2 focus:ring-white`}
               aria-label="Increase text size"
             >
               <Plus size={14} />
@@ -237,10 +237,10 @@ export default function StudentDashboard() {
       </div>
 
       {/* ---------------- NAVBAR ---------------- */}
-      <header className={`sticky top-0 left-0 right-0 z-40 shadow-xl overflow-visible transition-all duration-300 
+      <header className={`sticky top-0 left-0 right-0 z-20 shadow-xl overflow-visible transition-all duration-300 
         ${highContrast ? 'bg-black border-b border-white' : 'bg-white shadow-blue-100'}`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-3">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-2 py-1">
           {/* Logo */}
           <div className="flex items-center gap-4">
             <img src="/logo.png" alt="Emblem of Kerala" className="h-12" />
@@ -249,13 +249,13 @@ export default function StudentDashboard() {
                 GOVERNMENT OF KERALA
               </h1>
               <h4 className={`text-sm font-medium mt-0.5 ${highContrast ? 'text-gray-300' : 'text-blue-700'}`}>
-                LABOUR COMMISSIONERATE - KARMACHARI PORTAL
+               KERALA LABOUR COMMISSIONERATE - KARMACHARI PORTAL
               </h4>
             </div>
           </div>
 
           {/* Navbar buttons */}
-          <nav className="flex items-center gap-2 font-medium">
+          <nav className="flex items-center gap-3 font-medium">
             {/* Employers Dropdown */}
             <div className="relative group z-50">
               <button
@@ -381,7 +381,7 @@ export default function StudentDashboard() {
 
       <main id="main-content" tabIndex="-1" className="focus:outline-none focus:shadow-outline" ref={mainContentRef} role="main">
         {/* ---------------- HERO ---------------- */}
-        <section className="w-full relative h-[60vh] md:h-[70vh] overflow-hidden">
+        <section className="w-full relative h-[90vh] md:h-[100vh] overflow-hidden">
           {heroImages.map((img, idx) => (
             <motion.img
               key={idx}
@@ -674,9 +674,9 @@ export default function StudentDashboard() {
         </div>
 
         {/* Bottom Credit Line */}
-        <div className="mt-10 text-center text-base text-blue-300 border-t border-blue-800 pt-4">
-          © {new Date().getFullYear()} Karmachari - Labour Commissionerate, Government of Kerala. All rights reserved. | <Link to="/privacy" className="hover:underline">Privacy Policy</Link> | <Link to="/terms" className="hover:underline">Terms of Use</Link>
-        </div>
+        <div className="mt-10 text-center text-base text-yellow-300 border-t border-blue-800 pt-4">
+         © {new Date().getFullYear()} Karmachari - Labour Commissionerate, Government of Kerala, by <a href="https://pmdamc.ihrd.ac.in/" target="_blank" rel="noopener noreferrer" className="hover:underline text-white">IHRD</a>. All rights reserved. | <Link to="/privacy" className="hover:underline">Privacy Policy</Link> | <Link to="/terms" className="hover:underline">Terms of Use</Link>
+   </div>
       </footer>
     </div>
   );

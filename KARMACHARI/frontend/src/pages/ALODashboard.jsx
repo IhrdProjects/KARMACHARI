@@ -189,6 +189,35 @@ function Toast({ message, type, onClose }) {
 const formatCurrency = (amount) =>
   "₹" + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+// ---------------------- CSV Export Function ----------------------
+const exportWagesToCsv = (data, profileName) => {
+    let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Add UTF-8 BOM
+    const headers = ["ID", "Student", "Employer ID", "Month", "Monthly Amount", "Status", "Document Link"];
+    csvContent += headers.join(",") + "\n";
+
+    data.forEach(row => {
+        const rowData = [
+            row.id,
+            row.Student,
+            row.EmployerId,
+            row.Month,
+            row.MonthlyAmount.replace(/[^0-9.]/g, ''), // Clean currency for calculation
+            row.Status,
+            row.Document
+        ];
+        csvContent += rowData.map(item => `"${String(item).replace(/"/g, '""')}"`).join(",") + "\n"; // Enclose in quotes and escape
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `ALO_Wages_Report_${profileName.replace(/\s/g, '_')}_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+
 // ---------------------- Main Dashboard ----------------------
 export default function ALODashboard() {
   const navigate = useNavigate();
@@ -510,7 +539,8 @@ export default function ALODashboard() {
         );
 
     case "financials":
-        // --- FINANCIALS SECTION ---
+        // --- FINANCIALS SECTION (Updated) ---
+        const totalOverallWages = wages.reduce((sum, w) => sum + parseInt(w.MonthlyAmount.replace(/[^0-9]/g, '')), 0);
         return (
             <>
                 <h2 className="text-2xl font-bold mb-6 border-b pb-2" style={HEADER_COLOR_STYLE}>
@@ -519,35 +549,43 @@ export default function ALODashboard() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <DashboardCard 
-                        title="Pending Approvals" 
+                        title="Pending Payments" // Changed title for clarity
                         value={totalPendingWages} 
                         icon={AlertTriangle} 
                         colorClass="text-red-700"
                     />
                     <DashboardCard 
-                        title="Total Approved" 
+                        title="Payments Approved" // Changed title for clarity
                         value={wages.filter(w => w.Status === 'Approved').length} 
                         icon={CheckCircle} 
                         colorClass="text-green-700"
                     />
                     <DashboardCard 
-                        title="Estimated Pending Payout" 
-                        value={formatCurrency(wages.filter(w => w.Status === 'Pending').reduce((sum, w) => sum + parseInt(w.MonthlyAmount.replace(/[^0-9]/g, '')), 0))} 
+                        title="Total Program Wages" // Changed to reflect total wages
+                        value={formatCurrency(totalOverallWages)} 
                         icon={Calendar} 
+                        subText="Across all apprentices"
                         colorClass="text-blue-700"
                     />
                 </div>
                 
                 <h3 className="text-xl font-bold mt-8 mb-3 text-blue-900 border-b pb-2">
-                    <Calendar size={20} className="inline mr-2 align-middle text-orange-700"/> Monthly Stipend Approval Required ({totalPendingWages})
+                    <Download size={20} className="inline mr-2 align-middle text-indigo-700"/> Wage Data Export
                 </h3>
-                <Table
-                    columns={['Student', 'EmployerId', 'Month', 'MonthlyAmount', 'Document', 'Status']}
-                    data={wages.filter(w => w.Status === 'Pending')}
-                    onAction={approveWage}
-                    actionLabel="Approve Payment"
-                    actionIcon={CheckCircle}
-                />
+                <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p className="text-gray-700 text-base">
+                        Download a consolidated Excel-compatible CSV file of all apprenticeship wage records. This includes pending and approved payments.
+                    </p>
+                    <button
+                        onClick={() => {
+                            exportWagesToCsv(wages, profile.name);
+                            setToast({ message: "Wages data exported to CSV successfully!", type: "success" });
+                        }}
+                        className="flex items-center gap-2 bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-3 rounded-md text-sm font-medium transition shadow-md whitespace-nowrap"
+                    >
+                        <Download size={18} /> Download All Wages (CSV)
+                    </button>
+                </div>
             </>
         );
 
@@ -743,7 +781,7 @@ export default function ALODashboard() {
             onClick={handleLogout}
             className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-lg w-full text-sm font-medium transition shadow-md"
           >
-            <LogOut size={16} /> {sidebarOpen && "Official Logout"}
+            <LogOut size={16} /> {sidebarOpen && " Logout"}
           </button>
         </div>
       </aside>
